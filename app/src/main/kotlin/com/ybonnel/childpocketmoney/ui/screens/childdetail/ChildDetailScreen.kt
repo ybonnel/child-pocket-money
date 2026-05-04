@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,6 +20,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,7 +35,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -59,6 +58,8 @@ import com.ybonnel.childpocketmoney.domain.model.TransactionType
 import com.ybonnel.childpocketmoney.ui.common.components.ChildAvatar
 import com.ybonnel.childpocketmoney.ui.common.components.EmptyState
 import com.ybonnel.childpocketmoney.ui.common.components.MoneyText
+import java.text.DateFormat
+import java.util.Date
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -126,10 +127,10 @@ fun ChildDetailScreen(
                     containerColor = MaterialTheme.colorScheme.errorContainer,
                     modifier = Modifier.padding(bottom = 8.dp),
                 ) {
-                    Text(
-                        text = "−",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
+                    Icon(
+                        imageVector = Icons.Default.Remove,
+                        contentDescription = stringResource(R.string.child_detail_add_debit),
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
                 LargeFloatingActionButton(
@@ -296,8 +297,9 @@ private fun TransactionItem(
     transaction: Transaction,
     currencyCode: String,
 ) {
-    val tz = TimeZone.currentSystemDefault()
-    val date = transaction.occurredAt.toLocalDateTime(tz).date
+                // Locale-aware date formatting via java.text.DateFormat
+                val javaDate = Date(transaction.occurredAt.toEpochMilliseconds())
+                val dateStr = DateFormat.getDateInstance(DateFormat.SHORT).format(javaDate)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -318,7 +320,7 @@ private fun TransactionItem(
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
-                    text = "${date.dayOfMonth}/${date.monthNumber}/${date.year}",
+                    text = dateStr,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

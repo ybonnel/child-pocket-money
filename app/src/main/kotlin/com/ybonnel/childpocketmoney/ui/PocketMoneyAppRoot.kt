@@ -1,7 +1,10 @@
 package com.ybonnel.childpocketmoney.ui
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.AndroidViewModel
+import com.ybonnel.childpocketmoney.R
 import com.ybonnel.childpocketmoney.data.preferences.AppTheme
 import com.ybonnel.childpocketmoney.domain.usecase.balance.ProcessDueAllowancesUseCase
 import com.ybonnel.childpocketmoney.ui.navigation.PocketMoneyNavHost
@@ -26,10 +29,14 @@ fun PocketMoneyAppRoot(
 
 @HiltViewModel
 class AppRootViewModel @Inject constructor(
+    application: Application,
     private val processAllowances: ProcessDueAllowancesUseCase,
-) : androidx.lifecycle.ViewModel() {
+) : AndroidViewModel(application) {
 
     init {
+        // Set localized label before processing (keeps domain locale-agnostic).
+        processAllowances.allowanceLabel =
+            application.getString(R.string.transaction_type_allowance)
         // Process due allowances on startup. viewModelScope handles lifecycle correctly.
         // The use case is idempotent, so running it here in addition to WorkManager is safe.
         viewModelScope.launch {

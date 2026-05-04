@@ -7,7 +7,6 @@ import com.ybonnel.childpocketmoney.domain.repository.ChildRepository
 import com.ybonnel.childpocketmoney.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
@@ -23,13 +22,19 @@ import javax.inject.Inject
  * 1. For each active child with allowance > 0
  * 2. Get the last ALLOWANCE date
  * 3. Find all allowance days between last (exclusive) and now (inclusive)
- * 4. Insert a transaction for each due date
+ * 4. Insert a transaction for each due date (DB unique index prevents duplicates)
+ *
+ * @param allowanceLabel The user-visible label for automatic allowance transactions.
+ *   Injected from the UI layer so the domain stays locale-agnostic.
  */
 class ProcessDueAllowancesUseCase @Inject constructor(
     private val childRepository: ChildRepository,
     private val transactionRepository: TransactionRepository,
-    private val clock: Clock
+    private val clock: Clock,
 ) {
+    /** Override in tests or bind in DI to provide a localized label. */
+    var allowanceLabel: String = "allowance"
+
     suspend operator fun invoke() {
         val timeZone = TimeZone.currentSystemDefault()
         val now = clock.now()
@@ -45,23 +50,23 @@ class ProcessDueAllowancesUseCase @Inject constructor(
                 Instant.fromEpochMilliseconds(it).toLocalDateTime(timeZone).date
             }
 
-            // Find all due allowance days
+            // Start from the day after the last allowance, or from 7 days ago if none.
+            // Starting 7 days ago (= today - 6 days back, checking 7 days) avoids
+            // flooding when the app is first used.
             var checkDate = if (lastDate == null) {
-                // No previous allowance: start from 7 days ago to avoid flooding
-                today.minus(6, DateTimeUnit.DAY)
+                today.plus(-6, DateTimeUnit.DAY)
             } else {
                 lastDate.plus(1, DateTimeUnit.DAY)
             }
 
             while (checkDate <= today) {
-                // Check if this is the allowance day of the week
                 if (checkDate.dayOfWeek == child.allowanceDayOfWeek) {
                     val occurredAt = checkDate.atStartOfDayIn(timeZone)
                     transactionRepository.insert(
                         Transaction(
                             childId = child.id,
                             amount = child.weeklyAllowance,
-                            label = "Argent de poche hebdomadaire",
+                            label = allowanceLabel,
                             type = TransactionType.ALLOWANCE,
                             occurredAt = occurredAt,
                             createdAt = now,
@@ -72,11 +77,4 @@ class ProcessDueAllowancesUseCase @Inject constructor(
             }
         }
     }
-}
-
-private fun kotlinx.datetime.LocalDate.minus(
-    value: Int,
-    unit: DateTimeUnit.DateBased
-): kotlinx.datetime.LocalDate {
-    return plus(-value, unit)
 }
