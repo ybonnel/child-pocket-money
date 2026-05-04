@@ -6,6 +6,9 @@ export function useChildren(): Child[] {
   return useLiveQuery(() => childRepository.listAll(), [], []);
 }
 
-export function useChild(id: number): Child | undefined {
-  return useLiveQuery(() => childRepository.getById(id), [id]);
+export function useChild(id: number | undefined): Child | undefined {
+  return useLiveQuery(
+    () => (id === undefined ? Promise.resolve(undefined) : childRepository.getById(id)),
+    [id],
+  );
 }

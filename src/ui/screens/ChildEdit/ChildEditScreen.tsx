@@ -27,7 +27,7 @@ export function ChildEditScreen() {
   const isNew = id === 'new';
   const childId = isNew ? undefined : Number(id);
   const navigate = useNavigate();
-  const existingChild = useChild(childId ?? 0);
+  const existingChild = useChild(childId);
 
   const [name, setName] = useState(isNew ? '' : existingChild?.name ?? '');
   const [colorArgb, setColorArgb] = useState(
