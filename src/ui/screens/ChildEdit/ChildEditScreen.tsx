@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useChild } from '../../hooks/useChildren';
 import { childUseCases } from '../../../domain/usecases/children';
 import { Money } from '../../../core/money';
+import { argbToHex } from '../../../core/color';
 import { fr } from '../../../i18n/fr';
 import type { IsoWeekday } from '../../../core/time';
 import { ISO_WEEKDAYS } from '../../../core/time';
@@ -20,13 +21,6 @@ const PRESET_COLORS = [
   0xff_795548, // brown
   0xff_607d8b, // blue-grey
 ];
-
-function argbToHex(argb: number): string {
-  const r = (argb >> 16) & 0xff;
-  const g = (argb >> 8) & 0xff;
-  const b = argb & 0xff;
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-}
 
 export function ChildEditScreen() {
   const { id } = useParams<{ id: string }>();
@@ -54,6 +48,21 @@ export function ChildEditScreen() {
   );
   const [nameError, setNameError] = useState('');
   const [amountError, setAmountError] = useState('');
+
+  // Sync form state once the Dexie live query resolves the existing child
+  useEffect(() => {
+    if (!isNew && existingChild) {
+      setName(existingChild.name);
+      setColorArgb(existingChild.colorArgb);
+      setAllowanceStr(
+        existingChild.weeklyAllowance.isZero
+          ? ''
+          : String(Number(existingChild.weeklyAllowance.cents) / 100),
+      );
+      setAllowanceDay(existingChild.allowanceDayOfWeek);
+      setAllowanceActive(existingChild.allowanceActive);
+    }
+  }, [existingChild, isNew]);
 
   // If editing, wait for child to load
   if (!isNew && existingChild === undefined && childId !== undefined) {

@@ -22,5 +22,9 @@ npm-debug.log*
 # TypeScript
 *.tsbuildinfo
 
+# Vite tsc emit artifacts (should not be tracked)
+vite.config.js
+vite.config.d.ts
+
 # Coverage
 coverage/

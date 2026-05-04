@@ -4,6 +4,7 @@ import { App } from './App';
 import './ui/theme/tokens.css';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
+// eslint-disable-next-line react-refresh/only-export-components
 function Root() {
   const {
     needRefresh: [needRefresh],
