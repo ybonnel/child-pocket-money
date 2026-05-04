@@ -1,0 +1,18 @@
+.form-input--large {
+  font-size: var(--font-size-2xl);
+  text-align: center;
+  font-weight: 700;
+}
+
+.btn-primary--credit {
+  background-color: var(--color-credit);
+}
+
+.btn-primary--debit {
+  background-color: var(--color-debit);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

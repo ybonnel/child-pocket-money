@@ -1,0 +1,51 @@
+.settings-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.settings-section__title {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-on-surface-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-sm);
+}
+
+.settings-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.settings-card--radio {
+  gap: 0;
+}
+
+.settings-select {
+  width: 100%;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
+  cursor: pointer;
+  font-size: var(--font-size-md);
+}
+
+.radio-option input[type='radio'] {
+  accent-color: var(--color-primary);
+  width: 18px;
+  height: 18px;
+}
+
+.settings-about {
+  font-size: var(--font-size-sm);
+  color: var(--color-on-surface-muted);
+  line-height: 1.6;
+}

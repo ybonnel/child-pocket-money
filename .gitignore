@@ -1,13 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-node/
+
+# IDE
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
-*.jks
-*.keystore
-.kotlin/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite tsc emit artifacts (should not be tracked)
+vite.config.js
+vite.config.d.ts
+
+# Coverage
+coverage/

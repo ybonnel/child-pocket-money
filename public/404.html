@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // SPA fallback: redirect to index.html preserving the path as a hash
+      var l = window.location;
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 2).join('/') +
+          '/?p=' +
+          encodeURIComponent(l.pathname.slice(1) + l.search) +
+          l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
