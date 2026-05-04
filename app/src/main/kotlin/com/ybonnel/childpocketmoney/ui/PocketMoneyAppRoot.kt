@@ -9,6 +9,7 @@ import com.ybonnel.childpocketmoney.data.preferences.AppTheme
 import com.ybonnel.childpocketmoney.domain.usecase.balance.ProcessDueAllowancesUseCase
 import com.ybonnel.childpocketmoney.ui.navigation.PocketMoneyNavHost
 import com.ybonnel.childpocketmoney.ui.theme.PocketMoneyTheme
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

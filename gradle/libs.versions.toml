@@ -35,6 +35,7 @@ compose-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-animation = { module = "androidx.compose.animation:animation" }
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 nav-compose = { module = "androidx.navigation:navigation-compose", version.ref = "nav" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -45,6 +46,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.re
 hilt-nav-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavCompose" }
 hilt-work = { module = "androidx.hilt:hilt-work", version = "1.2.0" }
 hilt-work-compiler = { module = "androidx.hilt:hilt-compiler", version = "1.2.0" }
+compose-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
