@@ -34,13 +34,9 @@ class AppRootViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     init {
-        // Set localized label before processing (keeps domain locale-agnostic).
-        processAllowances.allowanceLabel =
-            application.getString(R.string.transaction_type_allowance)
-        // Process due allowances on startup. viewModelScope handles lifecycle correctly.
-        // The use case is idempotent, so running it here in addition to WorkManager is safe.
+        val allowanceLabel = application.getString(R.string.transaction_type_allowance)
         viewModelScope.launch {
-            processAllowances()
+            processAllowances(allowanceLabel)
         }
     }
 }

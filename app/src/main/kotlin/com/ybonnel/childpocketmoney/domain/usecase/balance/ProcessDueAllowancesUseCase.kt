@@ -25,17 +25,14 @@ import javax.inject.Inject
  * 4. Insert a transaction for each due date (DB unique index prevents duplicates)
  *
  * @param allowanceLabel The user-visible label for automatic allowance transactions.
- *   Injected from the UI layer so the domain stays locale-agnostic.
+ *   Passed as a parameter so the domain layer stays locale-agnostic.
  */
 class ProcessDueAllowancesUseCase @Inject constructor(
     private val childRepository: ChildRepository,
     private val transactionRepository: TransactionRepository,
     private val clock: Clock,
 ) {
-    /** Override in tests or bind in DI to provide a localized label. */
-    var allowanceLabel: String = "allowance"
-
-    suspend operator fun invoke() {
+    suspend operator fun invoke(allowanceLabel: String) {
         val timeZone = TimeZone.currentSystemDefault()
         val now = clock.now()
         val today = now.toLocalDateTime(timeZone).date

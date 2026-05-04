@@ -81,6 +81,14 @@ fun ChildDetailScreen(
         viewModel.loadChild(childId)
     }
 
+    // Show DB errors in a snackbar.
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            viewModel.clearError()
+        }
+    }
+
     // Handle snackbar for deleted transaction.
     // pendingDelete changes each time a new item is swiped — LaunchedEffect restarts,
     // cancelling the previous snackbar so the new one is shown immediately.

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.ybonnel.childpocketmoney.R
 import com.ybonnel.childpocketmoney.domain.usecase.balance.ProcessDueAllowancesUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -14,14 +15,15 @@ import dagger.assisted.AssistedInject
  */
 @HiltWorker
 class WeeklyAllowanceWorker @AssistedInject constructor(
-    @Assisted context: Context,
+    @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
-    private val processAllowances: ProcessDueAllowancesUseCase
+    private val processAllowances: ProcessDueAllowancesUseCase,
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
         return try {
-            processAllowances()
+            val allowanceLabel = context.getString(R.string.transaction_type_allowance)
+            processAllowances(allowanceLabel)
             Result.success()
         } catch (e: Exception) {
             Result.retry()

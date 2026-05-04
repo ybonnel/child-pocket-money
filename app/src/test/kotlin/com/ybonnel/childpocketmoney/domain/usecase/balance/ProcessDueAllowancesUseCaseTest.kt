@@ -84,7 +84,7 @@ class ProcessDueAllowancesUseCaseTest {
             clock = FakeClock(now),
         )
 
-        useCase()
+        useCase("argent de poche")
 
         assertThat(txRepo.inserted).hasSize(1)
         assertThat(txRepo.inserted[0].type).isEqualTo(TransactionType.ALLOWANCE)
@@ -103,7 +103,7 @@ class ProcessDueAllowancesUseCaseTest {
             clock = FakeClock(now),
         )
 
-        useCase()
+        useCase("argent de poche")
 
         assertThat(txRepo.inserted).isEmpty()
     }
@@ -123,7 +123,7 @@ class ProcessDueAllowancesUseCaseTest {
             clock = FakeClock(now),
         )
 
-        useCase()
+        useCase("argent de poche")
 
         // Last allowance was today, next due is in 7 days → nothing inserted
         assertThat(txRepo.inserted).isEmpty()
@@ -144,7 +144,7 @@ class ProcessDueAllowancesUseCaseTest {
             clock = FakeClock(now),
         )
 
-        useCase()
+        useCase("argent de poche")
 
         // Should insert for Jan 8 AND Jan 15 (2 missed Mondays)
         assertThat(txRepo.inserted).hasSize(2)
@@ -161,7 +161,7 @@ class ProcessDueAllowancesUseCaseTest {
             clock = FakeClock(now),
         )
 
-        useCase()
+        useCase("argent de poche")
 
         assertThat(txRepo.inserted).isEmpty()
     }
@@ -177,7 +177,7 @@ class ProcessDueAllowancesUseCaseTest {
             clock = FakeClock(now),
         )
 
-        useCase()
+        useCase("argent de poche")
 
         assertThat(txRepo.inserted).isEmpty()
     }
@@ -194,7 +194,7 @@ class ProcessDueAllowancesUseCaseTest {
             clock = FakeClock(now),
         )
 
-        useCase()
+        useCase("argent de poche")
 
         // Jan 8 is Monday and within past 7 days (Jan 5–11), so one insertion expected
         assertThat(txRepo.inserted).hasSize(1)
