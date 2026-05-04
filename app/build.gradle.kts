@@ -67,12 +67,14 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.tooling.preview)
     implementation(libs.compose.animation)
+    implementation(libs.compose.icons.extended)
     debugImplementation(libs.compose.tooling)
     debugImplementation(libs.compose.test.manifest)
 
     // Lifecycle
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.viewmodel.ktx)
 
     // Navigation
     implementation(libs.nav.compose)
