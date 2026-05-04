@@ -16,7 +16,13 @@ value class Money(val cents: Long) {
 
     companion object {
         val Zero = Money(0L)
-        fun fromDecimal(amount: Double): Money = Money((amount * 100).toLong())
+
+        /**
+         * Convert a decimal amount to Money cents using rounding.
+         * Uses Math.round to avoid floating-point truncation (e.g. 19.99 * 100 = 1998.999…).
+         */
+        fun fromDecimal(amount: Double): Money = Money(Math.round(amount * 100))
+
         fun fromString(str: String): Money? {
             val cleaned = str.replace(",", ".").trim()
             return cleaned.toDoubleOrNull()?.let { fromDecimal(it) }

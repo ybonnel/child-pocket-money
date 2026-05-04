@@ -13,7 +13,13 @@ import androidx.room.PrimaryKey
         childColumns = ["childId"],
         onDelete = ForeignKey.CASCADE
     )],
-    indices = [Index("childId"), Index("occurredAtEpochMs")]
+    indices = [
+        Index("childId"),
+        Index("occurredAtEpochMs"),
+        // Unique constraint prevents double ALLOWANCE insertion when WorkManager
+        // and startup LaunchedEffect run in parallel for the same due date.
+        Index(value = ["childId", "type", "occurredAtEpochMs"], unique = true),
+    ]
 )
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,

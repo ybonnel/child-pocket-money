@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,10 +24,12 @@ fun ChildAvatar(
 ) {
     val initial = name.firstOrNull()?.uppercaseChar()?.toString() ?: "?"
     val bgColor = Color(colorArgb)
-    // Use white or black text based on luminance
-    val luminance = (0.299 * ((colorArgb shr 16 and 0xFF) / 255.0) +
-            0.587 * ((colorArgb shr 8 and 0xFF) / 255.0) +
-            0.114 * (colorArgb and 0xFF / 255.0))
+    // Use white or black text based on relative luminance (WCAG formula).
+    // Parentheses are critical: `and 0xFF` must be evaluated before `/ 255.0`.
+    val r = (colorArgb shr 16 and 0xFF) / 255.0
+    val g = (colorArgb shr 8 and 0xFF) / 255.0
+    val b = (colorArgb and 0xFF) / 255.0
+    val luminance = 0.299 * r + 0.587 * g + 0.114 * b
     val textColor = if (luminance > 0.5) Color.Black else Color.White
 
     Box(

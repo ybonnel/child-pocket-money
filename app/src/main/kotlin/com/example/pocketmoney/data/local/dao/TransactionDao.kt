@@ -3,6 +3,7 @@ package com.example.pocketmoney.data.local.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.pocketmoney.data.local.entity.TransactionEntity
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +27,11 @@ interface TransactionDao {
     """)
     suspend fun lastAllowanceEpochMs(childId: Long): Long?
 
-    @Insert
+    /**
+     * Insert a transaction. IGNORE on conflict protects against duplicate ALLOWANCE
+     * entries when WorkManager and startup process run concurrently.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(tx: TransactionEntity): Long
 
     @Delete

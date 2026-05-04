@@ -2,10 +2,12 @@ package com.example.pocketmoney.data.repository
 
 import com.example.pocketmoney.data.local.dao.ChildDao
 import com.example.pocketmoney.data.mapper.toDomain
-import com.example.pocketmoney.data.mapper.toEntity
+import com.example.pocketmoney.data.mapper.toEntityForInsert
+import com.example.pocketmoney.data.mapper.toEntityForUpdate
 import com.example.pocketmoney.domain.model.Child
 import com.example.pocketmoney.domain.repository.ChildRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -20,10 +22,14 @@ class ChildRepositoryImpl @Inject constructor(
         dao.observeById(id).map { it?.toDomain() }
 
     override suspend fun insert(child: Child): Long =
-        dao.insert(child.toEntity())
+        dao.insert(child.toEntityForInsert())
 
-    override suspend fun update(child: Child) =
-        dao.update(child.toEntity())
+    override suspend fun update(child: Child) {
+        // Fetch the existing entity to preserve the original createdAtEpochMs.
+        val existing = dao.observeById(child.id).first()
+        val createdAt = existing?.createdAtEpochMs ?: System.currentTimeMillis()
+        dao.update(child.toEntityForUpdate(createdAt))
+    }
 
     override suspend fun archive(id: Long) =
         dao.archive(id)
