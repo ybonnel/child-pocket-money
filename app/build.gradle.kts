@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pocketmoney"
+    namespace = "com.ybonnel.childpocketmoney"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.pocketmoney"
+        applicationId = "com.ybonnel.childpocketmoney"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -42,6 +42,11 @@ android {
 
     buildFeatures {
         compose = true
+    }
+
+    // Export Room schema JSON for migration tracking
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
 
     packaging {
