@@ -60,6 +60,7 @@ export function createChildRepository(db: PocketMoneyDatabase = defaultDb) {
     },
 
     async getById(id: number): Promise<Child | undefined> {
+      if (!id || !Number.isFinite(id)) return undefined;
       const row = await db.children.get(id);
       if (!row || row.id === undefined) return undefined;
       return rowToChild(row as ChildRow & { id: number });
