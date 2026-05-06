@@ -24,7 +24,7 @@ const PRESET_COLORS = [
 
 export function ChildEditScreen() {
   const { id } = useParams<{ id: string }>();
-  const isNew = id === 'new';
+  const isNew = !id || id === 'new';
   const childId = isNew ? undefined : Number(id);
   const navigate = useNavigate();
   const existingChild = useChild(childId);

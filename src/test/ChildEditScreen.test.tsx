@@ -60,7 +60,7 @@ function renderNew() {
   return render(
     <MemoryRouter initialEntries={['/child/new']}>
       <Routes>
-        <Route path="/child/:id" element={<ChildEditScreen />} />
+        <Route path="/child/new" element={<ChildEditScreen />} />
       </Routes>
     </MemoryRouter>,
   );
